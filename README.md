@@ -1,6 +1,6 @@
 # go-file-server [![Go](https://github.com/rankun203/go-file-server/actions/workflows/go.yml/badge.svg)](https://github.com/rankun203/go-file-server/actions/workflows/go.yml) [![docker pull rankun203/openconnect-proxy](https://img.shields.io/docker/v/rankun203/go-file-server?label=docker%20pull%20rankun203/go-file-server)](https://hub.docker.com/r/rankun203/go-file-server)
 
-You can POST / GET / list files to this server
+You can POST / GET / list files to this server.
 
 ## Features
 
