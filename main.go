@@ -112,7 +112,23 @@ upload:
 download:
 
   curl -O http://localhost:3000/download/file.ext
-  curl -O http://localhost:3000/download/fancy.zip`))
+  curl -O http://localhost:3000/download/fancy.zip
+
+list files:
+
+  curl http://localhost:3000/files
+
+Compress files:
+
+  tar -cf compressed.tar /path/to/directory
+  tar -cf - /path/to/directory | pigz > compressed.tar.gz
+  tar -czf compressed.tar.gz /path/to/directory
+
+Decompress files:
+
+  tar -xf compressed.tar
+  tar -xzf compressed.tar.gz
+`))
 }
 
 func main() {
