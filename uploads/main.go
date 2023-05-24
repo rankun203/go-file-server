@@ -5,10 +5,8 @@ import (
 	"fmt"
 	"io"
 	"io/ioutil"
-	"log"
 	"net/http"
 	"os"
-	"time"
 )
 
 func uploadFile(w http.ResponseWriter, r *http.Request) {
@@ -133,51 +131,12 @@ Decompress files:
 `))
 }
 
-func logRequest(next http.Handler) http.Handler {
-	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		// Start timer
-		start := time.Now()
-
-		// Wrap the response writer
-		ww := &responseWriterWrapper{ResponseWriter: w}
-
-		// Call the next handler
-		next.ServeHTTP(ww, r)
-
-		// Calculate response time
-		duration := time.Since(start)
-
-		// Log details
-		log.Printf("%d - %s %s %d bytes in %s", ww.status, r.Method, r.URL, ww.length, duration.String())
-	})
-}
-
-type responseWriterWrapper struct {
-	http.ResponseWriter
-	status int
-	length int
-}
-
-func (w *responseWriterWrapper) WriteHeader(status int) {
-	w.status = status
-	w.ResponseWriter.WriteHeader(status)
-}
-
-func (w *responseWriterWrapper) Write(b []byte) (int, error) {
-	if w.status == 0 {
-		w.status = http.StatusOK
-	}
-	n, err := w.ResponseWriter.Write(b)
-	w.length += n
-	return n, err
-}
-
 func main() {
-	http.Handle("/upload", logRequest(http.HandlerFunc(uploadFile)))
-	http.Handle("/download/", logRequest(http.HandlerFunc(downloadFile)))
-	http.Handle("/files", logRequest(http.HandlerFunc(listFiles)))
-	http.Handle("/", logRequest(http.HandlerFunc(notFoundHandler)))
+	http.HandleFunc("/upload", uploadFile)
+	http.HandleFunc("/download/", downloadFile)
+	http.HandleFunc("/files", listFiles)
+	http.HandleFunc("/", notFoundHandler)
 
-	fmt.Println("Server starting and listening on http://127.0.0.1:3000")
+	fmt.Println("Server starting and listening on :3000...")
 	http.ListenAndServe(":3000", nil)
 }
