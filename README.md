@@ -60,7 +60,7 @@ Run docker image
 ```bash
 docker run -p 3000:3000 go-file-server
 
-# or use existing server
+# or use existing docker image
 docker run -p 3000:3000 rankun203/go-file-server
 ```
 
